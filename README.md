@@ -64,3 +64,123 @@ un sistema de favoritos.
 
 - **Documentación:** 
    - Documentar detalladamente el código, el diagrama ERD y las decisiones de diseño tomadas durante el desarrollo.
+
+## Desarrollo servicio "Me gusta"
+
+Se establece una relación de muchos a muchos representada por una tabla de relación
+llama 'likes_history' la cual tendrá la siguiente estructura:
+```text
+    id INT PRIMARY KEY
+    property_id INT FOREIGN KEY
+    user_id INT FOREIGN KEY
+    liked_date DATETIME
+```
+De este modo se consigue almacenar la cantidad de likes por propiedad y las propiedades favoritas de un usuario
+así mismo si que necesitara se podrían realizar metricas teniendo en cuenta las propiedades favoritas de la ultima 
+semana, mes o cualquier instante de tiempo.
+
+El modelo entidad realación que extiende el modelo inicial es el siguiente:
+
+![entity_relationship_diagram.png](entity_relationship_diagram.png)
+
+Para llevar a cabo la implementación de esta nueva tabla de relación se propone el siguiente código SQL
+
+### Creación de la tabla
+```sql
+CREATE TABLE likes_history (
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ property_id INT,
+ user_id INT,
+ liked_date DATETIME,
+ FOREIGN KEY (property_id) REFERENCES property(id),
+ FOREIGN KEY (user_id) REFERENCES auth_user(id)
+);
+```
+### Posibles servicios a implementar
+1. Servicio "Agregar a favoritos/Me gusta":
+    ```sql
+    INSERT INTO likes_history 
+       (
+        property_id, 
+        user_id, 
+        liked_date 
+       ) 
+    VALUES
+       (
+        {property_id_value}, 
+        {user_id_value}, 
+        {liked_date_value}   
+       );
+   ```
+   
+2. Servicio publicaciones favoritas:
+    ```sql
+    SELECT u.id, 
+       u.username, 
+       p.address, 
+       p.city
+    FROM likes_history lh
+    JOIN auth_user u
+    ON lh.user_id = u.id
+    JOIN property p 
+    ON lh.property_id = p.id
+    WHERE u.username = {username_value}
+    GROUP BY lh.user_id, lh.property_id
+   ```
+
+3. Cantidad de likes por propiedad:
+    ```sql
+    SELECT p.id, 
+       p.address, 
+       p.city, 
+       count(lh.property_id) as amount_of_likes
+    FROM likes_history lh
+    JOIN property p 
+    ON lh.property_id = p.id
+    GROUP BY lh.property_id;
+   ```
+   A la anterior se le podría agregar una clausula where con el objetivo de obtener solo
+    una propiedad.
+
+En resumen, la implementación de la tabla de relación para los usuarios y las propiedades 
+permite desarrollar distintos servicios asociados al sistema de favoritos.
+
+## Instalación y Ejecución
+
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/FelipeUribe81/Habi-Technical-Assessment.git
+   cd Habi-Technical-Assessment
+   ```
+
+2. Instalar dependencias:
+   ```bash
+   pip install requirements.txt
+   ```
+   
+3. Configurar las variables de entorno:
+   - Crear un archivo .env
+   - Agregar la configuración de la base de datos:
+   ```bash
+   DB_HOST=xxxxxxxxxx
+   DB_PORT=xxxx
+   DB_USER=xxxxxx
+   DB_PASSWORD=xxxxxx
+   DB_DATABASE=xxxxxxx
+   ```
+   - Agregar la configuración de la applicación:
+   ```bash
+   APP_SECRET=xxxxxx
+   APP_USER=xxxxxxx
+   APP_PASSWORD=xxxxxx
+   ```
+   
+4. Ejecutar la aplicación:
+   ```bash
+    python .\main.py
+   ```
+   
+5. Ejecutar las pruebas:
+   ```bash
+    python -m unittest .\test\real_estate\test_main_services.py
+   ```
