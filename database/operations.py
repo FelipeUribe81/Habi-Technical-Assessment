@@ -7,6 +7,21 @@ cursor = db_conn.conn.cursor(dictionary=True)
 
 
 def fetch_properties(construction_year, city, status):
+    """
+       With the objetive of using SQL queries to retrieve properties with
+       respective filters this method is using database collection and
+       calling Queries object.
+
+       Parameters
+       ----------
+       construction_year: int
+           Value of construction year value
+       city: str
+           Value of located city of property
+       status: str
+           Value of status name of property
+   """
+
     try:
         query = Queries.get_properties()
         cursor.execute(query, (
@@ -19,5 +34,7 @@ def fetch_properties(construction_year, city, status):
     except Exception as e:
         print(f"Error fetching properties: {e}")
         raise e
+    # Commented because same connection is calling multiple times from
+    # unit test
     # finally:
     #     db_conn.close_connection()

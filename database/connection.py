@@ -4,6 +4,24 @@ from utils.config import db_config
 
 
 class DataBaseConnection:
+    """
+       A class used to represent database connection
+
+
+       Attributes
+       ----------
+       conn
+           An object of database connection with MySQL
+
+       Methods
+       -------
+       create_connection()
+           Creates the connections using the environment variables
+           of MySQL database
+
+       close_connection()
+           Close the connection with MySQL server
+   """
 
     def __init__(self):
         self.conn = self.create_connection()

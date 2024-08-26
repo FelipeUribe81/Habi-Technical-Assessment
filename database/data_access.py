@@ -2,6 +2,17 @@ from utils import constants
 
 
 class Queries:
+    """
+    A class used to represent SQL Queries
+
+    Methods
+    -------
+    get_properties()
+        Static method that represents fetching of properties from database
+        with necessary conditions to filter by year, city, and status name
+        at the same time with the business conditions applied
+    """
+
     @staticmethod
     def get_properties():
         return f"""

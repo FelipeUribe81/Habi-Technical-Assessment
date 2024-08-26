@@ -3,6 +3,16 @@ from utils.utilities import encrypt_token, clean_request_token
 
 
 def check_is_authorized_user(request_token):
+    """
+       Return a boolean that indicates whether the request token is valid,
+       thus validating user authorization.
+
+       Attributes
+       ----------
+       request_token: str
+           Token coming form the header request
+      """
+
     app_secret = app_config.app_secret
     user = app_config.app_user
     password = app_config.app_password

@@ -8,6 +8,27 @@ from utils import constants
 
 
 def request_handler(event):
+    """
+     To achieve handling the data from the client this function provides
+     a way to catch the possible errors with the data incoming before
+     to perform any service.
+
+    Parameters
+    ----------
+    event : dict
+        The sound the animal makes (default is None)
+
+    Raises
+    ------
+    CustomBadRequest
+        If the event object has an incomplete structure
+    CustomMethodNotAllowed
+        If the operation and http methods are not allowed by server
+        configurations
+    CustomUnauthorized
+        If the user performing the action is not authorized
+    """
+
     try:
         http_method = event.get("requestContext").get("httpMethod")
 

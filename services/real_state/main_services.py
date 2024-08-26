@@ -8,9 +8,21 @@ from utils.exceptions import CustomUnauthorized, CustomBadRequest, CustomMethodN
 
 
 def get_properties(**kwargs):
-    request_context = kwargs.get("request_context")
+    """
+    Check if data coming from server is suitable for the service purpose and
+    retrieves the response object with properties data
+
+    Parameters
+    ----------
+    Keyword Args:
+        headers (dict): An object that describes headers coming from client
+        query_params (dict): An object that contains optional search variables
+        request_context (dict): An object that says the operations of request
+    """
+
     headers = kwargs.get("headers")
     params = kwargs.get("query_params")
+    request_context = kwargs.get("request_context")
 
     http_method = request_context.get("httpMethod")
     resource_path = request_context.get("resourcePath")
