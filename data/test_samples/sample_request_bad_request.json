@@ -1,0 +1,15 @@
+{
+  "requestContext": {
+    "resourcePath": "/get_properties",
+    "httpMethod": "GET"
+  },
+  "queryStringParameters": {
+    "construction_year": 2011,
+    "city": "bogota",
+    "status": "pre_venta"
+  },
+  "pathParameters": {
+    "operation": "get_properties"
+  },
+  "body": null
+}

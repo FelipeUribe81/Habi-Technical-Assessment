@@ -1,0 +1,20 @@
+{
+  "requestContext": {
+    "resourcePath": "/get_properties",
+    "httpMethod": "GET"
+  },
+  "headers": {
+    "accept": "*/*",
+    "Host": "habi.co",
+    "User-Agent": "Chrome/127.0.0.0..."
+  },
+  "queryStringParameters": {
+    "construction_year": 2011,
+    "city": "bogota",
+    "status": "pre_venta"
+  },
+  "pathParameters": {
+    "operation": "get_properties"
+  },
+  "body": null
+}

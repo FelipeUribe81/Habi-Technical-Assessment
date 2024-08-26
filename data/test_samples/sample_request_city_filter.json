@@ -1,0 +1,19 @@
+{
+  "requestContext": {
+    "resourcePath": "/get_properties",
+    "httpMethod": "GET"
+  },
+  "headers": {
+    "accept": "*/*",
+    "Host": "habi.co",
+    "User-Agent": "Chrome/127.0.0.0...",
+    "Authorization": "Token 442c5a0b900ec54ae2da2bf26c243e70ec16b61824986f64f543172585e809a6"
+  },
+  "queryStringParameters": {
+    "city": "bogota"
+  },
+  "pathParameters": {
+    "operation": "get_properties"
+  },
+  "body": null
+}
