@@ -37,13 +37,13 @@ un sistema de favoritos.
      1. Extraer el estado más reciente.
      2. Identificar el nombre del estado cruzando 'status_history' con 'status'.
      3. Obtener los datos que se muestran al usuario cruzando con la tabla de propiedades.
-     4. Descartar los estados invalidos.
-     5. Eliminar los datos inconcistentes.
+     4. Descartar los estados inválidos.
+     5. Eliminar los datos inconsistentes.
      6. Implementar filtros por año de construcción, ciudad, y estado.
    - Desarrollar la lógica backend para manejar las consultas y los filtros. Para asemejar el comportamiento de un
-   microservicio, se establecera un controlador para capturar excepciones en la estructura de los datos y ejecutar 
+   microservicio, se establecerá un controlador para capturar excepciones en la estructura de los datos y ejecutar 
    el servicio dependiendo de la demanda solicitada. Ej: (**_Obtener Inmuebles_**)
-   - Los datos que vienen del front serán similares a lo que recibe el parametro _**"event"**_ del 
+   - Los datos que vienen del front serán similares a lo que recibe el parámetro _**"event"**_ del 
    las funciones **_"lambda"_** de AWS (**[Event parameter](https://aws-lambda-for-python-developers.readthedocs.io/en/latest/02_event_and_context/)**)
 
 3. **Pruebas:**
@@ -80,10 +80,10 @@ llama 'likes_history' la cual tendrá la siguiente estructura:
     liked_date DATETIME
 ```
 De este modo se consigue almacenar la cantidad de likes por propiedad y las propiedades favoritas de un usuario
-así mismo si que necesitara se podrían realizar metricas teniendo en cuenta las propiedades favoritas de la ultima 
-semana, mes o cualquier instante de tiempo.
+así mismo si que necesitara se podrían realizar métricas teniendo en cuenta las propiedades favoritas de la última 
+semana, mes o cualquier instante del tiempo.
 
-El modelo entidad realación que extiende el modelo inicial es el siguiente:
+El modelo entidad relación que extiende el modelo inicial es el siguiente:
 
 ![entity_relationship_diagram.png](entity_relationship_diagram.png)
 
@@ -143,7 +143,7 @@ CREATE TABLE likes_history (
     ON lh.property_id = p.id
     GROUP BY lh.property_id;
    ```
-   A la anterior se le podría agregar una clausula where con el objetivo de obtener solo
+   A la anterior se le podría agregar una cláusula where con el objetivo de obtener solo
     una propiedad.
 
 En resumen, la implementación de la tabla de relación para los usuarios y las propiedades 
@@ -151,10 +151,10 @@ permite desarrollar distintos servicios asociados al sistema de favoritos.
 
 ## ¿Que mejoraría la estructura actual de la base de datos?
 
-A terminos generales el modelo de la base de datos esta bien relacionado y esto no permite gran margen de mejora, 
+A términos generales el modelo de la base de datos esta bien relacionado y esto no permite gran margen de mejora, 
 sin embargo, para el tipo de datos que existen en la base de datos veo dos posibles mejoras:
 
-1. Llave primaria compuesta entre el property id y la fecha de actualización. Esto facilitaría las consultas de
+1. Llave primaria compuesta entre el property id y la fecha de actualización. Esto facilita las consultas de
 historial por propiedad.
 2. El valor del precio para las propiedades debería ser de tipo decimal pues los valores monetarios no suelen ser 
 exactos la mayoría del tiempo.
@@ -207,10 +207,10 @@ operación; "POST" (Crear valores), "GET" (Recuperar valores), etc.
 fue ejecutada la petición.
 - **browsers_version**: Es una cadena de caracteres que indica el navegador y la versión del mismo.
 - **token_value**: Es el valor encriptado con el algoritmo SHA256 del la frase secreta de autenticación.
-- **year_value**: Es un parametro de consulta el cual hace referecia al año de construcción del
+- **year_value**: Es un parámetro de consulta el cual hace referencia al año de construcción del
 inmueble (**_no es requerido_**).
-- **city**: Es un parametro de consulta el cual hace referecia al año de construcción del inmueble (**_no es requerido_**).
-- **status**: Es un parametro de consulta el cual hace referecia al estado del inmueble (**_no es requerido_**).
+- **city**: Es un parámetro de consulta el cual hace referencia al año de construcción del inmueble (**_no es requerido_**).
+- **status**: Es un parámetro de consulta el cual hace referencia al estado del inmueble (**_no es requerido_**).
 - **body_object_value**: Es un objeto el cual representa los valores que se desean envíar al servidor desde el cliente.
 
 ## Instalación y Ejecución
