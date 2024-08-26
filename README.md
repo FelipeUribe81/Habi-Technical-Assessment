@@ -29,7 +29,8 @@ un sistema de favoritos.
    - Diseñar una consulta SQL eficiente que recupere los inmuebles según los filtros aplicados.
    - Implementar filtros por año de construcción, ciudad, y estado.
    - Construir un microservicio que pueda ser consumido por una arquitectura REST.
-   - Crear un archivo JSON que simule los datos que se esperan recibir desde el front-end con los filtros aplicados por los usuarios.
+   - Crear un archivo JSON que simule los datos que se esperan recibir desde el front-end con los filtros aplicados 
+   por los usuarios.
 
 2. **Implementación:**
    - Implementación de la query: 
@@ -42,8 +43,8 @@ un sistema de favoritos.
    - Desarrollar la lógica backend para manejar las consultas y los filtros. Para asemejar el comportamiento de un
    microservicio, se establecera un controlador para capturar excepciones en la estructura de los datos y ejecutar 
    el servicio dependiendo de la demanda solicitada. Ej: (**_Obtener Inmuebles_**)
-   - Los datos que vienen del front serán similares a lo que recibe el parametro _**'event'**_ del 
-   las funciones **_'lambda'_** de AWS (**[Event parameter](https://aws-lambda-for-python-developers.readthedocs.io/en/latest/02_event_and_context/)**)
+   - Los datos que vienen del front serán similares a lo que recibe el parametro _**"event"**_ del 
+   las funciones **_"lambda"_** de AWS (**[Event parameter](https://aws-lambda-for-python-developers.readthedocs.io/en/latest/02_event_and_context/)**)
 
 3. **Pruebas:**
    - Implementar pruebas unitarias para garantizar que las consultas y filtros funcionen correctamente.
@@ -51,16 +52,19 @@ un sistema de favoritos.
 ### Servicio de "Me gusta"
 
 1. **Diseño Conceptual:**
-   - Diseñar un diagrama de Entidad-Relación (ERD) para extender el modelo de la base de datos y soportar la funcionalidad de "me gusta".
+   - Diseñar un diagrama de Entidad-Relación (ERD) para extender el modelo de la base de datos y soportar la 
+   funcionalidad de "me gusta".
    - El diagrama debe reflejar cómo se almacenarán los "me gusta" y cómo se relacionan con los usuarios y los inmuebles.
 
 2. **Implementación SQL:**
-   - Escribir el código SQL necesario para extender el modelo de la base de datos con las tablas y relaciones requeridas.
+   - Escribir el código SQL necesario para extender el modelo de la base de datos con las tablas y relaciones 
+   requeridas.
 
 ### Pruebas y Documentación
 
 - **Pruebas Unitarias:** 
-   - Asegurarse de que cada funcionalidad esté cubierta por pruebas unitarias, validando los resultados esperados y manejando errores.
+   - Asegurarse de que cada funcionalidad esté cubierta por pruebas unitarias, validando los resultados esperados 
+  y manejando errores.
 
 - **Documentación:** 
    - Documentar detalladamente el código, el diagrama ERD y las decisiones de diseño tomadas durante el desarrollo.
@@ -145,6 +149,70 @@ CREATE TABLE likes_history (
 En resumen, la implementación de la tabla de relación para los usuarios y las propiedades 
 permite desarrollar distintos servicios asociados al sistema de favoritos.
 
+## ¿Que mejoraría la estructura actual de la base de datos?
+
+A terminos generales el modelo de la base de datos esta bien relacionado y esto no permite gran margen de mejora, 
+sin embargo, para el tipo de datos que existen en la base de datos veo dos posibles mejoras:
+
+1. Llave primaria compuesta entre el property id y la fecha de actualización. Esto facilitaría las consultas de
+historial por propiedad.
+2. El valor del precio para las propiedades debería ser de tipo decimal pues los valores monetarios no suelen ser 
+exactos la mayoría del tiempo.
+
+### El modelo con los cambios se vería de la siguiente manera:
+
+![entity_relationship_diagram_improved.png](entity_relationship_diagram_improved.png)
+
+Existen factores adicionales a tener en cuenta para replantear la estructura de la base de datos, por ejemplo, las
+condiciones del negocio, si llegase a ser necesario la estructura podría cambiar de manera tal que no se necesite una 
+base de datos relacional.
+
+## JSON (Sample request)
+
+```json
+{
+  "requestContext": {
+    "resourcePath": "/{endpoint_operation_value}",
+    "httpMethod": "{http_method_value}"
+  },
+  "headers": {
+    "accept": "*/*",
+    "Host": "{client_address_value}",
+    "User-Agent": "{browsers_version}",
+    "Authorization": "Token {token_value}"
+  },
+  "queryStringParameters": {
+    "construction_year": "{year_value}",
+    "city": "{city_value}",
+    "status": "{satus_name_value}"
+  },
+  "pathParameters": {
+    "operation": "{endpoint_operation_value}"
+  },
+  "body": "{body_object_value}"
+}
+```
+Como fue explicado en el apartado de implementación se utliza el objeto "**_event_**" que recibe la función 
+"_**lambda_handler**_" en AWS pues es un ejemplo real de como podría llegar los datos siendo esta función invocada
+por un servicio como **_API Gateway_** el cual puede ser perfectamente utilizado para una arquitectura 
+de microservicios.
+
+### Atributos del objeto
+
+- **endpoint_operation_value**: Cadena de caracteres que representa la operación a ejecutar. 
+Ej: (create_property, get_properties...) 
+- **http_method_value**: Cadena de caracteres que representa el método http, este tiene un valor acorde a la 
+operación; "POST" (Crear valores), "GET" (Recuperar valores), etc.
+- **client_address_value**: Cadena de caracteres que representa la dirección del cliente desde donde 
+fue ejecutada la petición.
+- **browsers_version**: Es una cadena de caracteres que indica el navegador y la versión del mismo.
+- **token_value**: Es el valor encriptado con el algoritmo SHA256 del la frase secreta de autenticación.
+- **year_value**: Es un parametro de consulta el cual hace referecia al año de construcción del
+inmueble (**_no es requerido_**).
+- **city**: Es un parametro de consulta el cual hace referecia al año de construcción del inmueble (**_no es requerido_**).
+- **status**: Es un parametro de consulta el cual hace referecia al estado del inmueble (**_no es requerido_**).
+- **body_object_value**: Es un objeto el cual representa los valores que se desean envíar al servidor desde el cliente.
+
 ## Instalación y Ejecución
 
 1. Clonar el repositorio:
@@ -159,7 +227,7 @@ permite desarrollar distintos servicios asociados al sistema de favoritos.
    ```
    
 3. Configurar las variables de entorno:
-   - Crear un archivo .env
+   - Crear un archivo .env en la raiz del proyecto.
    - Agregar la configuración de la base de datos:
    ```bash
    DB_HOST=xxxxxxxxxx
